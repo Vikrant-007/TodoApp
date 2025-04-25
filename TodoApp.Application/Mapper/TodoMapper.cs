@@ -14,16 +14,25 @@ namespace TodoApp.Application.Mapper
 			);
 		}
 
-		public static IEnumerable<TodoDetailDto> ToDto(this IEnumerable<Todo> todos)
+		public static List<TodoDetailDto> ToDto(this List<Todo> todos)
 		{
-			return todos.Select(todo => new TodoDetailDto(
-				todo.Id,
-				todo.Description,
-				todo.IsComplete
+			return todos.ConvertAll(t => new TodoDetailDto(
+				t.Id,
+				t.Description,
+				t.IsComplete
 			));
 		}
 
-		public static Todo ToEntity(this TodoDto todoDto)
+		//public static IEnumerable<TodoDetailDto> ToDto(this IEnumerable<Todo> todos)
+		//{
+		//	return todos.Select(todo => new TodoDetailDto(
+		//		todo.Id,
+		//		todo.Description,
+		//		todo.IsComplete
+		//	));
+		//}
+
+		public static Todo ToEntity(this TodoRequestDto todoDto)
 		{
 			return new Todo
 			{

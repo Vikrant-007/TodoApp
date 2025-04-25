@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Features\TodoManager\Handler\Commands\UpdateTodoHandler.cs~RF1540f84e.TMP" />
+    <None Remove="Features\TodoManager\Handler\Commands\UpdateTodoHandler.cs~RF154c26da.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TodoApp.Domain\TodoApp.Domain.csproj" />
     <ProjectReference Include="..\TodoApp.Shared\TodoApp.Shared.csproj" />
   </ItemGroup>

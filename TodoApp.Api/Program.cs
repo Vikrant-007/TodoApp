@@ -1,4 +1,5 @@
 using Serilog;
+using TodoApp.Application.DependencyInjection;
 using TodoApp.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddOpenApi();
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();
 
+builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();

@@ -2,23 +2,21 @@
 using TodoApp.Application.Dtos;
 using TodoApp.Application.Mapper;
 using TodoApp.Application.Interfaces;
+using MediatR;
+using TodoApp.Application.Features.TodoManager.Request.Queries;
 
 namespace TodoApp.Api.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class TodoController(ITodo todo) : ControllerBase
+	public class TodoController(IMediator mediator) : ControllerBase
 	{
-		private readonly ITodo _todo = todo;
+		private readonly IMediator _mediator = mediator;
 
 		[HttpGet]
-		public async Task<IEnumerable<TodoDetailDto>> GetAll()
+		public async Task<List<TodoDetailDto>> GetAll()
 		{
-			var todos = await _todo.GetAllAsync();
-			if (!todos.Any())
-				return [];
-
-			return todos.ToDto();
+			return await _mediator.Send(new GetTodosListRequest());
 		}
 	}
 }
