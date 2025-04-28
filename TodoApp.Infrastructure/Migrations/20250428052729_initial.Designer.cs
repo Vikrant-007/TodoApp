@@ -12,8 +12,8 @@ using TodoApp.Infrastructure.Context;
 namespace TodoApp.Infrastructure.Migrations
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20250425123905_intial")]
-    partial class intial
+    [Migration("20250428052729_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,17 +54,17 @@ namespace TodoApp.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4405523-93a0-4366-a877-64e55655fde6",
-                            ConcurrencyStamp = "4405523-93a0-4366-a877-64e55655fde6",
-                            Name = "Reader",
-                            NormalizedName = "READER"
+                            Id = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
+                            ConcurrencyStamp = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "48cb80d4-bf42-4c60-bd6d-14c44b27d7b0",
-                            ConcurrencyStamp = "48cb80d4-bf42-4c60-bd6d-14c44b27d7b0",
-                            Name = "Writer",
-                            NormalizedName = "WRITER"
+                            Id = "cac43a6e-f7bb-4448-baaf-1add431ccbbf",
+                            ConcurrencyStamp = "cac43a6e-f7bb-4448-baaf-1add431ccbbf",
+                            Name = "User",
+                            NormalizedName = "User"
                         });
                 });
 
@@ -153,6 +153,18 @@ namespace TodoApp.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "cbc43a8e-f7bb-4445-baaf-1add431ffbbf"
+                        },
+                        new
+                        {
+                            UserId = "9e224968-33e4-4652-b7b7-8574d048cdb9",
+                            RoleId = "cac43a6e-f7bb-4448-baaf-1add431ccbbf"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -245,6 +257,44 @@ namespace TodoApp.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "dcdc6bf1-041c-4f3d-9b44-6f81b4a46b22",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "System",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@LOCALHOST.COM",
+                            NormalizedUserName = "ADMIN@LOCALHOST.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAECWfmrIAWh9MVoBKkNvBrRcu1te6hSeSxGhyIS8yNBrOuz6RDYLUmqsARsj/i+eYNA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "1e05a947-e832-468b-9198-12b57fb015d9",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@localhost.com"
+                        },
+                        new
+                        {
+                            Id = "9e224968-33e4-4652-b7b7-8574d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "224daa98-55e3-4af3-9fa1-03f6de03b68a",
+                            Email = "vicky@user.com",
+                            EmailConfirmed = true,
+                            FirstName = "System",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "VICKY@USER.COM",
+                            NormalizedUserName = "VICKY@USER.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAhHK+ap4f6eo8EipCUsGIyJUnZURzuo1Wy30HuLKh9WBiDkob4XnMuEzsQVl46uSg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "7c88a8f5-033f-4ed4-8a8a-f6f35e11546e",
+                            TwoFactorEnabled = false,
+                            UserName = "vicky@user.com"
+                        });
                 });
 
             modelBuilder.Entity("TodoApp.Domain.Entities.Todo", b =>
@@ -269,6 +319,22 @@ namespace TodoApp.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Todos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("677ba03a-4c55-4296-825d-a7832add9fe9"),
+                            Description = "Todo 1",
+                            IsComplete = true,
+                            UserId = "9e224968-33e4-4652-b7b7-8574d048cdb9"
+                        },
+                        new
+                        {
+                            Id = new Guid("39c602b4-f495-4e79-8f01-38c7d9b3a6dc"),
+                            Description = "Todo 2",
+                            IsComplete = false,
+                            UserId = "9e224968-33e4-4652-b7b7-8574d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

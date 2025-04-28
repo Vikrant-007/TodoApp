@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TodoApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -185,8 +185,35 @@ namespace TodoApp.Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4405523-93a0-4366-a877-64e55655fde6", "4405523-93a0-4366-a877-64e55655fde6", "Reader", "READER" },
-                    { "48cb80d4-bf42-4c60-bd6d-14c44b27d7b0", "48cb80d4-bf42-4c60-bd6d-14c44b27d7b0", "Writer", "WRITER" }
+                    { "cac43a6e-f7bb-4448-baaf-1add431ccbbf", "cac43a6e-f7bb-4448-baaf-1add431ccbbf", "User", "User" },
+                    { "cbc43a8e-f7bb-4445-baaf-1add431ffbbf", "cbc43a8e-f7bb-4445-baaf-1add431ffbbf", "Administrator", "ADMINISTRATOR" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "dcdc6bf1-041c-4f3d-9b44-6f81b4a46b22", "admin@admin.com", true, "System", "Admin", false, null, "ADMIN@LOCALHOST.COM", "ADMIN@LOCALHOST.COM", "AQAAAAIAAYagAAAAECWfmrIAWh9MVoBKkNvBrRcu1te6hSeSxGhyIS8yNBrOuz6RDYLUmqsARsj/i+eYNA==", null, false, "1e05a947-e832-468b-9198-12b57fb015d9", false, "admin@localhost.com" },
+                    { "9e224968-33e4-4652-b7b7-8574d048cdb9", 0, "224daa98-55e3-4af3-9fa1-03f6de03b68a", "vicky@user.com", true, "System", "User", false, null, "VICKY@USER.COM", "VICKY@USER.COM", "AQAAAAIAAYagAAAAEAhHK+ap4f6eo8EipCUsGIyJUnZURzuo1Wy30HuLKh9WBiDkob4XnMuEzsQVl46uSg==", null, false, "7c88a8f5-033f-4ed4-8a8a-f6f35e11546e", false, "vicky@user.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "cbc43a8e-f7bb-4445-baaf-1add431ffbbf", "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { "cac43a6e-f7bb-4448-baaf-1add431ccbbf", "9e224968-33e4-4652-b7b7-8574d048cdb9" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Todos",
+                columns: new[] { "Id", "Description", "IsComplete", "UserId" },
+                values: new object[,]
+                {
+                    { new Guid("39c602b4-f495-4e79-8f01-38c7d9b3a6dc"), "Todo 2", false, "9e224968-33e4-4652-b7b7-8574d048cdb9" },
+                    { new Guid("677ba03a-4c55-4296-825d-a7832add9fe9"), "Todo 1", true, "9e224968-33e4-4652-b7b7-8574d048cdb9" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Serilog;
 using TodoApp.Application.DependencyInjection;
 using TodoApp.Infrastructure.DependencyInjection;
@@ -7,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+//builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+//builder.Services.AddFluentValidationAutoValidation();
+
 
 builder.Services.AddOpenApi();
 
@@ -24,6 +30,8 @@ app.UseInfrastructurePolicies();
 app.MapOpenApi();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text.Json;
+using TodoApp.Application.Exceptions;
 using TodoApp.Infrastructure.Logs;
+using TodoApp.Shared.Responses;
 
 namespace TodoApp.Infrastructure.Middleware;
 
@@ -11,43 +13,51 @@ public class GlobalExceptionHandler(RequestDelegate next)
 
 	public async Task InvokeAsync(HttpContext httpContext)
 	{
-		string title = "Error";
-		string message = "An error occurred while processing your request.";
-		int statusCode = (int)HttpStatusCode.InternalServerError;
-
 		try
 		{
 			await _next(httpContext);
 
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
-			LogException.LogExceptions(e);
+			LogException.LogExceptions(ex);
 
-			if (e is TaskCanceledException || e is TimeoutException)
-			{
-				title = "Out of time";
-				message = "The request took too long to complete.";
-				statusCode = (int)HttpStatusCode.RequestTimeout;
-			}
-
-
-
-			await ModifyHeader(httpContext, title, message, statusCode);
+			await HandleExceptionAsync(httpContext, ex);
 		}
 	}
 
-	private static async Task ModifyHeader(HttpContext httpContext, string title, string message, int statusCode)
+	private Task HandleExceptionAsync(HttpContext context, Exception exception)
 	{
-		httpContext.Response.ContentType = "application/json";
-		await httpContext.Response.WriteAsJsonAsync(new ProblemDetails
-		{
-			Detail = message,
-			Status = statusCode,
-			Title = title
-		}, CancellationToken.None);
+		context.Response.ContentType = "application/json";
+		HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
+		BaseResponse<string> result = new(false, exception.Message, 204);
 
-		return;
+		switch (exception)
+		{
+			case BadRequestException badRequestException:
+				statusCode = HttpStatusCode.BadRequest;
+				result.Error = exception.Message;
+				break;
+			case ValidationException validationException:
+				statusCode = HttpStatusCode.BadRequest;
+				result.Error = string.Join(", ", validationException.Errors);
+				break;
+			case NotFoundException notFoundException:
+				statusCode = HttpStatusCode.NotFound;
+				result.Error = exception.Message;
+				break;
+			default:
+				break;
+		}
+
+		context.Response.StatusCode = (int)statusCode;
+		return context.Response.WriteAsJsonAsync(result);
+	}
+
+
+	public class ErrorDeatils
+	{
+		public string ErrorType { get; set; } = default!;
+		public string ErrorMessage { get; set; } = default!;
 	}
 }
-

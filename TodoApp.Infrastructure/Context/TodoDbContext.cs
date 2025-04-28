@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TodoApp.Domain.Entities;
+using TodoApp.Infrastructure.Context.EntityConfigurations;
 
 namespace TodoApp.Infrastructure.Context
 {
@@ -9,32 +9,14 @@ namespace TodoApp.Infrastructure.Context
 	{
 		public DbSet<Todo> Todos { get; set; } = null!;
 
-		protected override void OnModelCreating(ModelBuilder builder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
 
-			base.OnModelCreating(builder);
-			string readerRoleId = "4405523-93a0-4366-a877-64e55655fde6";
-			string writerRoleId = "48cb80d4-bf42-4c60-bd6d-14c44b27d7b0";
-
-			List<IdentityRole> role =
-			[
-				new IdentityRole
-				{
-					Id = readerRoleId,
-					ConcurrencyStamp = readerRoleId,
-					Name = "Reader",
-					NormalizedName = "Reader".ToUpper()
-				},
-				new IdentityRole
-				{
-					Id = writerRoleId,
-					ConcurrencyStamp = writerRoleId,
-					Name = "Writer",
-					NormalizedName = "Writer".ToUpper()
-				},
-			];
-
-			builder.Entity<IdentityRole>().HasData(role);
+			modelBuilder.ApplyConfiguration(new RoleConfiguration());
+			modelBuilder.ApplyConfiguration(new UserConfiguration());
+			modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+			modelBuilder.ApplyConfiguration(new TodoConfiguration());
 		}
 	}
 }

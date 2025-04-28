@@ -11,18 +11,19 @@ namespace TodoApp.Infrastructure.Context.EntityConfigurations
 			builder.HasData(
 				new Todo
 				{
-					Id = Guid.Parse("f547e6ec-e9f1-4464-9d65-8bea192a8c3c"),
+					Id = Guid.NewGuid(),
 					Description = "Todo 1",
-					IsComplete = true
+					IsComplete = true,
+					UserId = "9e224968-33e4-4652-b7b7-8574d048cdb9"
 				},
 				new Todo
 				{
-					Id = Guid.Parse("c591ef19-c5f0-40a9-b3b5-a424a21f3a24"),
+					Id = Guid.NewGuid(),
 					Description = "Todo 2",
-					IsComplete = false
+					IsComplete = false,
+					UserId = "9e224968-33e4-4652-b7b7-8574d048cdb9"
 				}
 			);
-
 		}
 	}
 }

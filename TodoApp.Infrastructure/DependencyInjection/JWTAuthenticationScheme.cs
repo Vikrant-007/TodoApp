@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TodoApp.Application.Models.Identity;
 
 namespace TodoApp.Infrastructure.DependencyInjection;
 
@@ -10,13 +11,12 @@ public static class JWTAuthenticationScheme
 {
 	public static IServiceCollection AddJWTAuthenticationScheme(this IServiceCollection services, IConfiguration config)
 	{
+
+		services.Configure<JwtSettings>(config.GetSection("JwtSettings"));
+
 		services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			.AddJwtBearer("Bearer", options =>
 			{
-				byte[] key = Encoding.UTF8.GetBytes(config.GetSection("Jwt:Key").Value!);
-				string issuer = config.GetSection("Jwt:Issuer").Value!;
-				string audience = config.GetSection("Jwt:Audience").Value!;
-
 				options.RequireHttpsMetadata = false;
 				options.SaveToken = true;
 				options.TokenValidationParameters = new TokenValidationParameters
@@ -25,9 +25,10 @@ public static class JWTAuthenticationScheme
 					ValidateAudience = true,
 					ValidateLifetime = true,
 					ValidateIssuerSigningKey = true,
-					ValidIssuer = issuer,
-					ValidAudience = audience,
-					IssuerSigningKey = new SymmetricSecurityKey(key),
+					ValidIssuer = config.GetSection("JwtSettings:Issuer").Value!,
+					ValidAudience = config.GetSection("JwtSettings:Audience").Value!,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JwtSettings:Key").Value!)),
+					ClockSkew = TimeSpan.Zero,
 				};
 			});
 
