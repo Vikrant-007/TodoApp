@@ -27,7 +27,7 @@ namespace TodoApp.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<TodoDetailDto> Post([FromForm] TodoRequestDto todoRequestDto)
+		public async Task<TodoDetailDto> Post([FromBody] TodoRequestDto todoRequestDto)
 		{
 			var response = await _mediator.Send(new CreateTodoRequest() { TodoRequestDto = todoRequestDto });
 			return response;

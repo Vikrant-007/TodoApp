@@ -1,5 +1,3 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Serilog;
 using TodoApp.Application.DependencyInjection;
 using TodoApp.Infrastructure.DependencyInjection;
@@ -9,11 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-
-//builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-//builder.Services.AddFluentValidationAutoValidation();
-
-
 builder.Services.AddOpenApi();
 
 //Cleared the default logging providers and added Serilog

@@ -63,6 +63,7 @@ public static class ServiceContainer
 
 		services.Configure<EmailSettings>(config.GetSection("EmailSettings"));
 		services.AddTransient<IEmailSender, EmailSender>();
+		services.AddTransient<ExceptionHandlerMiddleware>();
 
 		services.AddSwaggerScheme();
 
@@ -71,7 +72,7 @@ public static class ServiceContainer
 
 	public static IApplicationBuilder UseInfrastructurePolicies(this IApplicationBuilder app)
 	{
-		app.UseGlobalExceptionHandler();
+		app.UseMiddleware<ExceptionHandlerMiddleware>();
 		app.UseCors("AllowAllOrigins");
 		app.UseSwaggerPolicies();
 		return app;

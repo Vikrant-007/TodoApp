@@ -1,32 +1,30 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Net;
-using System.Text.Json;
 using TodoApp.Application.Exceptions;
 using TodoApp.Infrastructure.Logs;
 using TodoApp.Shared.Responses;
 
 namespace TodoApp.Infrastructure.Middleware;
 
-public class GlobalExceptionHandler(RequestDelegate next)
+public class ExceptionHandlerMiddleware : IMiddleware
 {
-	private readonly RequestDelegate _next = next;
-
-	public async Task InvokeAsync(HttpContext httpContext)
+	
+	public async Task InvokeAsync(HttpContext context, RequestDelegate next)
 	{
 		try
 		{
-			await _next(httpContext);
+			await next(context);
 
 		}
 		catch (Exception ex)
 		{
 			LogException.LogExceptions(ex);
 
-			await HandleExceptionAsync(httpContext, ex);
+			await HandleExceptionAsync(context, ex);
 		}
 	}
 
-	private Task HandleExceptionAsync(HttpContext context, Exception exception)
+	private static Task HandleExceptionAsync(HttpContext context, Exception exception)
 	{
 		context.Response.ContentType = "application/json";
 		HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
@@ -54,10 +52,4 @@ public class GlobalExceptionHandler(RequestDelegate next)
 		return context.Response.WriteAsJsonAsync(result);
 	}
 
-
-	public class ErrorDeatils
-	{
-		public string ErrorType { get; set; } = default!;
-		public string ErrorMessage { get; set; } = default!;
-	}
 }

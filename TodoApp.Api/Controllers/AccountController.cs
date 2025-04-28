@@ -11,13 +11,13 @@ namespace TodoApp.Api.Controllers
 		private readonly IAuthService _authenticationService = authenticationService;
 
 		[HttpPost("login")]
-		public async Task<ActionResult<AuthResponse>> Login([FromForm] AuthRequest request)
+		public async Task<ActionResult<AuthResponse>> Login([FromBody] AuthRequest request)
 		{
 			return Ok(await _authenticationService.Login(request));
 		}
 
 		[HttpPost("register")]
-		public async Task<ActionResult<RegistrationResponse>> Register([FromForm] RegistrationRequest request)
+		public async Task<ActionResult<RegistrationResponse>> Register([FromBody] RegistrationRequest request)
 		{
 			return Ok(await _authenticationService.Register(request));
 		}
