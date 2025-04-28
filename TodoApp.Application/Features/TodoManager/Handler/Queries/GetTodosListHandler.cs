@@ -13,7 +13,7 @@ namespace TodoApp.Application.Features.TodoManager.Handler.Queries
 
 		public async Task<List<TodoDetailDto>> Handle(GetTodosListRequest request, CancellationToken cancellationToken)
 		{
-			List<Todo> todos = await _todo.GetAll();
+			List<Todo> todos = await _todo.FilterSearch(request.Search, request.IsCompleted, request.PageNumber, request.PageSize);
 
 			return todos.ToDto();
 		}

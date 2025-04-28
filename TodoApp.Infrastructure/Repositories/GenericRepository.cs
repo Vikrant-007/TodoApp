@@ -16,28 +16,28 @@ namespace TodoApp.Infrastructure.Repositories
 
 		public async Task Delete(T entity)
 		{
-			_table.Remove(entity);
+			await Task.FromResult(_table.Remove(entity));
 		}
 
 		public async Task<bool> Exists(Guid id)
 		{
-			var entity = await Get(id);
+			T? entity = await Get(id);
 			return entity != null;
 		}
 
-		public async Task<T> Get(Guid id)
+		public async Task<T?> Get(Guid id)
 		{
 			return await _table.FindAsync(id);
 		}
 
-		public async Task<List<T>> GetAll()
+		public async Task<IQueryable<T>> GetAll()
 		{
-			return await _table.ToListAsync();
+			return await Task.FromResult(_table.AsQueryable());
 		}
 
 		public async Task Update(T entity)
 		{
-			_table.Update(entity);
+			await Task.FromResult(_table.Update(entity));
 		}
 	}
 }

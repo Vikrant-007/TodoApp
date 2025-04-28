@@ -7,20 +7,20 @@ namespace TodoApp.Infrastructure.Repositories
 {
 	public class TodoRepository(TodoDbContext todoDbContext) : GenericRepository<Todo>(todoDbContext), ITodoRepository
 	{
-		//public async Task<(List<Todo>, int)> FilterSearch(string? search, bool? isCompleted, int pageNumber, int pageSize)
-		//{
-		//	IQueryable<Todo> todos = GetAll().Include(e => e.User);
+		public async Task<List<Todo>> FilterSearch(string? search, bool? isCompleted, int pageNumber, int pageSize)
+		{
+			IQueryable<Todo> todos = await GetAll();
 
-		//	if (!string.IsNullOrWhiteSpace(search))
-		//		todos = todos.Where(t => t.Description.Contains(search));
+			if (!string.IsNullOrWhiteSpace(search))
+				todos = todos.Where(t => t.Description.Contains(search));
 
-		//	if (isCompleted.HasValue)
-		//		todos = todos.Where(t => t.IsComplete == isCompleted);
+			if (isCompleted.HasValue)
+				todos = todos.Where(t => t.IsComplete == isCompleted);
 
-		//	int skipResult = (pageNumber - 1) * pageSize;
+			int skipResult = (pageNumber - 1) * pageSize;
 
-		//	return (await todos.Skip(skipResult).Take(pageSize).ToListAsync(), await todos.CountAsync());
-		//}
+			return await todos.Skip(skipResult).Take(pageSize).ToListAsync();
+		}
 
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Net;
 using TodoApp.Application.Exceptions;
-using TodoApp.Infrastructure.Logs;
+using TodoApp.Infrastructure.Logger;
 using TodoApp.Shared.Responses;
 
 namespace TodoApp.Infrastructure.Middleware;

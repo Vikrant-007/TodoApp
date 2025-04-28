@@ -16,11 +16,21 @@ namespace TodoApp.Api.Controllers
 		private readonly IMediator _mediator = mediator;
 
 		[HttpGet]
-		public async Task<BaseResponse<List<TodoDetailDto>>> GetAll()
+		public async Task<BaseResponse<List<TodoDetailDto>>> GetAll(
+			[FromQuery] string? search,
+			[FromQuery] bool? isCompleted,
+			[FromQuery] int pageNumber = 1,
+			[FromQuery] int pageSize = 1000
+		)
 		{
-			List<TodoDetailDto> todos = await _mediator.Send(new GetTodosListRequest());
+			List<TodoDetailDto> todos = await _mediator.Send(new GetTodosListRequest() { 
+				Search = search,
+				IsCompleted = isCompleted, 
+				PageNumber = pageNumber, 
+				PageSize = pageSize }
+			);
 
-			if(todos == null || todos.Count == 0)
+			if (todos == null || todos.Count == 0)
 				return BaseResponse<List<TodoDetailDto>>.Failure("Data Not Found");
 
 			return BaseResponse<List<TodoDetailDto>>.Success(todos);

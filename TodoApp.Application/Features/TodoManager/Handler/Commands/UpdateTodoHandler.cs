@@ -16,11 +16,6 @@ public class UpdateTodoHandler(ITodoRepository todo) : IRequestHandler<UpdateTod
 	public async Task<Unit> Handle(UpdateTodoRequest request, CancellationToken cancellationToken)
 	{
 
-		TodoValidator validator = new();
-		ValidationResult validationResult = await validator.ValidateAsync(request.TodoRequestDto);
-		if (!validationResult.IsValid)
-			throw new ValidationException(validationResult);
-
 		Todo? todo = await _todo.Get(request.Id) ?? throw new NotFoundException(nameof(Todo), request.Id);
 		todo = request.TodoRequestDto.ToEntity();
 		await _todo.Update(todo);

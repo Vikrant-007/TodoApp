@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace TodoApp.Infrastructure.Logs
+namespace TodoApp.Infrastructure.Logger
 {
 	public static class LogException 
 	{
